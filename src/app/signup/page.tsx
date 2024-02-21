@@ -12,6 +12,7 @@ export type Payload = {
   email: string;
   role: string;
   password: string;
+  image?: string | ArrayBuffer;
 };
 
 export type SignupFeild = Payload & { cnfPassword: string };

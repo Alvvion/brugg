@@ -8,6 +8,7 @@ import { useSignupContext } from "@/contexts/signupContext";
 import { SubmitHandler } from "react-hook-form";
 import { Payload, SignupFeild } from "@/app/signup/page";
 import { addProject } from "@/lib/encypt";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
   const {
@@ -21,6 +22,8 @@ function SignupForm() {
     setSubmitted,
   } = useSignupContext();
 
+  const { push } = useRouter();
+
   const onSubmit: SubmitHandler<SignupFeild> = (data) => {
     setSubmitted(true);
     const payload: Payload = {
@@ -29,9 +32,11 @@ function SignupForm() {
       email: data.email,
       role: data.role,
       password: data.password,
+      image,
     };
 
     addProject(payload);
+    push("/");
     setSubmitted(false);
   };
 
