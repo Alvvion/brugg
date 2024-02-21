@@ -1,10 +1,6 @@
-"use client";
-
-import useSWR from "swr";
 import ProjectCard from "@/components/project/ProjectCard";
 import EmptyProject from "@/components/project/EmptyProject";
 import NewProjectButton from "@/components/layout/NewProjectButton";
-import { fetcher } from "@/lib/auth";
 
 export type ProjectType = {
   projectCode: string;
@@ -15,15 +11,11 @@ export type ProjectType = {
 };
 
 export default async function Project() {
-  const { data: projects, error } = useSWR<ProjectType[]>("dashboard", fetcher);
-
-  if (!projects) {
-    return <p>Loading</p>;
-  }
-
-  if (error) {
-    return <p>Error occured</p>;
-  }
+  const data = await fetch("http://localhost:3000/api/project", {
+    method: "GET",
+    cache: "no-store",
+  });
+  const projects: ProjectType[] = await data.json();
 
   if (projects.length === 0) {
     return <EmptyProject hidden={false} />;

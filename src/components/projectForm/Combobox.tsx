@@ -8,29 +8,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Combobox } from "@headlessui/react";
 import { StateType } from "./NewProjectForm";
-import { getUsers } from "@/lib/auth";
-
-const people = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 3,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  // More users...
-];
+import { UserSessionType } from "@/app/dashboard/layout";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -41,13 +19,11 @@ export default function Listbox({
   setSelectedPerson,
   users,
 }: {
-  selectedPerson: StateType[];
-  setSelectedPerson: React.Dispatch<React.SetStateAction<StateType[]>>;
-  users: object[];
+  selectedPerson: UserSessionType[];
+  setSelectedPerson: React.Dispatch<React.SetStateAction<UserSessionType[]>>;
+  users: UserSessionType[];
 }) {
   const [query, setQuery] = useState("");
-  // const [people, setPeople] = useState([]);
-  // console.log(selectedPerson);
 
   const filteredPeople =
     query === ""
@@ -128,7 +104,7 @@ export default function Listbox({
       </div>
       {selectedPerson && selectedPerson?.length > 0 && (
         <ul className="grid grid-cols-2">
-          {selectedPerson?.map((person: { id: number; name: string }) => (
+          {selectedPerson?.map((person) => (
             <li key={person?._id} className="">
               {" "}
               <button

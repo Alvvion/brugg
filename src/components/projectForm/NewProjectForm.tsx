@@ -3,9 +3,11 @@
 import Listbox from "./Combobox";
 import { useRef } from "react";
 import { useProjectContext } from "@/contexts/projectContext";
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { addProject } from "@/lib/auth";
+import { useRouter } from "next/navigation";
+import { UserSessionType } from "@/app/dashboard/layout";
 
 export type FormFeild = {
   projectName: string;
@@ -14,31 +16,35 @@ export type FormFeild = {
   deadline: string;
   location: string;
   jointer: {
-    id: string;
+    _id: string;
   }[];
 };
 
 export type StateType = {
-  id: number;
+  _id: string;
   name: string;
   imageUrl: string;
 };
 
-function NewProjectForm({ users }: { users: object[] }) {
+function NewProjectForm({ users }: { users: UserSessionType[] }) {
   const cancelButtonRef = useRef(null);
-  const [selectedPerson, setSelectedPerson] = useState<StateType[]>([]);
+  const router = useRouter();
+  const [selectedPerson, setSelectedPerson] = useState<UserSessionType[]>([]);
   const { setNewProjectOpen: setOpen } = useProjectContext();
 
   const { register, handleSubmit } = useForm<FormFeild>();
 
   const onSubmit: SubmitHandler<FormFeild> = (data) => {
     console.log(data);
-    const jointers = [];
-    selectedPerson.forEach((person) => jointers.push(person._id));
+    const jointers: {
+      _id: string;
+    }[] = [];
+    selectedPerson.forEach((person) => jointers.push({ _id: person._id }));
     console.log(jointers);
     data.jointer = jointers;
     addProject(data);
     setOpen(false);
+    router.refresh();
   };
 
   return (

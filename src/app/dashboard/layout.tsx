@@ -7,6 +7,7 @@ import NewProject from "@/components/layout/NewProject";
 import { getUser } from "@/lib/auth";
 import { GET as getUsers } from "@/app/api/users/route";
 export type UserSessionType = {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -21,7 +22,7 @@ export default async function DashboardLayout({
 }) {
   const user: UserSessionType = await getUser();
   const res = await getUsers();
-  const users = await res.json();
+  const users: UserSessionType[] = await res.json();
   return (
     <ProjectProvider>
       <div>
