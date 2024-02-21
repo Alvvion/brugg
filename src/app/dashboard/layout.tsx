@@ -5,7 +5,7 @@ import { ProjectProvider } from "@/contexts/projectContext";
 import DashboardDesktop from "@/components/layout/DashboardDesktop";
 import NewProject from "@/components/layout/NewProject";
 import { getUser } from "@/lib/auth";
-
+import { GET as getUsers } from "@/app/api/users/route";
 export type UserSessionType = {
   firstName: string;
   lastName: string;
@@ -20,10 +20,12 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const user: UserSessionType = await getUser();
+  const res = await getUsers();
+  const users = await res.json();
   return (
     <ProjectProvider>
       <div>
-        <NewProject />
+        <NewProject users={users} />
         <DashboardTransition />
         <DashboardDesktop user={user} />
         <DashboardMobile />

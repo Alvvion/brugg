@@ -1,7 +1,6 @@
-import { PlusIcon } from "@heroicons/react/20/solid";
 import NewProjectButton from "../layout/NewProjectButton";
 
-export default function EmptyProject() {
+export default function EmptyProject({ hidden = false }: { hidden?: boolean }) {
   return (
     <div className="text-center w-full h-screen flex justify-center items-center">
       <div className="my-auto relative">
@@ -27,7 +26,7 @@ export default function EmptyProject() {
           Get started by creating a new project.
         </p>
         <div className="mt-6">
-          <NewProjectButton fixed={false} />
+          <NewProjectButton fixed={false} hidden={hidden} />
         </div>
       </div>
     </div>

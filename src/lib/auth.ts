@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { decrypt, encrypt } from "./encypt";
 import { SignupFeild } from "@/app/signup/page";
 import { UserSessionType } from "@/app/dashboard/layout";
+import { FormFeild } from "@/components/projectForm/NewProjectForm";
 
 export const login = async (formData: FormData) => {
   const userCred = {
@@ -70,3 +71,25 @@ export async function getUser() {
     console.warn(error);
   }
 }
+
+export async function addProject(payload: FormFeild) {
+  try {
+    const { data } = await axios.post(
+      "http://localhost:3000/api/project",
+      payload
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const fetcher = async () => {
+  const data = await fetch("http://localhost:3000/api/project", {
+    method: "GET",
+    next: {
+      revalidate: 1,
+    },
+  });
+  const response = await data.json();
+  return response;
+};

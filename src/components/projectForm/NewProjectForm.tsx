@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useProjectContext } from "@/contexts/projectContext";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
+import { addProject } from "@/lib/auth";
 
 export type FormFeild = {
   projectName: string;
@@ -23,7 +24,7 @@ export type StateType = {
   imageUrl: string;
 };
 
-function NewProjectForm() {
+function NewProjectForm({ users }: { users: object[] }) {
   const cancelButtonRef = useRef(null);
   const [selectedPerson, setSelectedPerson] = useState<StateType[]>([]);
   const { setNewProjectOpen: setOpen } = useProjectContext();
@@ -32,6 +33,11 @@ function NewProjectForm() {
 
   const onSubmit: SubmitHandler<FormFeild> = (data) => {
     console.log(data);
+    const jointers = [];
+    selectedPerson.forEach((person) => jointers.push(person._id));
+    console.log(jointers);
+    data.jointer = jointers;
+    addProject(data);
     setOpen(false);
   };
 
@@ -40,6 +46,7 @@ function NewProjectForm() {
       <Listbox
         selectedPerson={selectedPerson}
         setSelectedPerson={setSelectedPerson}
+        users={users}
       />
       <div>
         <label

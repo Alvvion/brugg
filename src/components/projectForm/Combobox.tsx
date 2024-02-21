@@ -39,25 +39,21 @@ function classNames(...classes: string[]) {
 export default function Listbox({
   selectedPerson,
   setSelectedPerson,
+  users,
 }: {
   selectedPerson: StateType[];
   setSelectedPerson: React.Dispatch<React.SetStateAction<StateType[]>>;
+  users: object[];
 }) {
   const [query, setQuery] = useState("");
   // const [people, setPeople] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const user = await getUsers();
-      console.log(user);
-    })();
-  }, []);
+  // console.log(selectedPerson);
 
   const filteredPeople =
     query === ""
-      ? people
-      : people.filter((person) => {
-          return person.name.toLowerCase().includes(query.toLowerCase());
+      ? users
+      : users.filter((person) => {
+          return person.email.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
@@ -86,7 +82,7 @@ export default function Listbox({
           <Combobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {filteredPeople.map((person) => (
               <Combobox.Option
-                key={person.id}
+                key={person._id}
                 value={person}
                 className={({ active }) =>
                   classNames(
@@ -99,7 +95,7 @@ export default function Listbox({
                   <>
                     <div className="flex items-center">
                       <img
-                        src={person.imageUrl}
+                        src={person?.image}
                         alt=""
                         className="h-6 w-6 flex-shrink-0 rounded-full"
                       />
@@ -109,7 +105,7 @@ export default function Listbox({
                           selected ? "font-semibold" : ""
                         )}
                       >
-                        {person.name}
+                        {person.firstName} {person.lastName}
                       </span>
                     </div>
 
@@ -133,21 +129,21 @@ export default function Listbox({
       {selectedPerson && selectedPerson?.length > 0 && (
         <ul className="grid grid-cols-2">
           {selectedPerson?.map((person: { id: number; name: string }) => (
-            <li key={person?.id} className="">
+            <li key={person?._id} className="">
               {" "}
               <button
                 type="button"
                 className="group flex items-center justify-between rounded-md border border-gray-300 text-left shadow-sm mt-2"
                 onClick={() =>
                   setSelectedPerson((prev) =>
-                    prev.filter((prevPerson) => prevPerson.id !== person?.id)
+                    prev.filter((prevPerson) => prevPerson._id !== person?._id)
                   )
                 }
               >
                 <span className="flex min-w-0 flex-1 items-center ml-2">
                   <span className="block min-w-0 flex-1">
                     <span className="block truncate text-sm font-medium text-gray-900">
-                      {person.name}
+                      {person.firstName} {person.lastName}
                     </span>
                   </span>
                 </span>

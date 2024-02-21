@@ -5,6 +5,10 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     await connectDB();
+    const collectionExists = await User.exists({});
+    if (!collectionExists) {
+      await User.createCollection();
+    }
     const data = await User.find();
     return new NextResponse(JSON.stringify(data), { status: 200 });
   } catch (error) {
