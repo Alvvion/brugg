@@ -4,8 +4,12 @@ import sideImage from "@/assests/background.jpg";
 import Link from "next/link";
 import LoginForm from "@/components/login/LoginForm";
 import { LoginProvider } from "@/contexts/loginContext";
+import { BASE_URL } from "@/lib/env";
 
 export default function Home() {
+  if (!BASE_URL) {
+    return null;
+  }
   return (
     <LoginProvider>
       <div className="flex min-h-full flex-1 w-full h-screen">
