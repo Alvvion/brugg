@@ -1,7 +1,9 @@
+"use client";
+
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useProjectContext } from "@/contexts/projectContext";
-import NewProjectForm from "./NewProjectForm";
+import NewProjectForm from "../projectForm/NewProjectForm";
 
 function NewProject() {
   const { newProjectOpen: open, setNewProjectOpen: setOpen } =

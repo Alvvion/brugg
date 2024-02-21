@@ -1,7 +1,10 @@
+"use client";
+
 import Listbox from "./Combobox";
 import { useRef } from "react";
 import { useProjectContext } from "@/contexts/projectContext";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { useState } from "react";
 
 export type FormFeild = {
   projectName: string;
@@ -14,22 +17,30 @@ export type FormFeild = {
   }[];
 };
 
+export type StateType = {
+  id: number;
+  name: string;
+  imageUrl: string;
+};
+
 function NewProjectForm() {
   const cancelButtonRef = useRef(null);
+  const [selectedPerson, setSelectedPerson] = useState<StateType[]>([]);
   const { setNewProjectOpen: setOpen } = useProjectContext();
 
-  const { register, handleSubmit, control } = useForm<FormFeild>();
+  const { register, handleSubmit } = useForm<FormFeild>();
 
   const onSubmit: SubmitHandler<FormFeild> = (data) => {
     console.log(data);
     setOpen(false);
   };
 
-  const { fields } = useFieldArray({ name: "jointer", control });
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Listbox fields={fields} />
+      <Listbox
+        selectedPerson={selectedPerson}
+        setSelectedPerson={setSelectedPerson}
+      />
       <div>
         <label
           htmlFor="projectName"

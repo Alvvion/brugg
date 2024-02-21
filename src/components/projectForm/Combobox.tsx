@@ -1,18 +1,14 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   CheckIcon,
   ChevronUpDownIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { Combobox } from "@headlessui/react";
-// import { FieldArrayWithId } from "react-hook-form";
-// import type { FormFeild } from "./NewProjectForm";
-
-type StateType = {
-  id: number;
-  name: string;
-  imageUrl: string;
-};
+import { StateType } from "./NewProjectForm";
+import { getUsers } from "@/lib/auth";
 
 const people = [
   {
@@ -40,9 +36,22 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Listbox({ fields }) {
+export default function Listbox({
+  selectedPerson,
+  setSelectedPerson,
+}: {
+  selectedPerson: StateType[];
+  setSelectedPerson: React.Dispatch<React.SetStateAction<StateType[]>>;
+}) {
   const [query, setQuery] = useState("");
-  const [selectedPerson, setSelectedPerson] = useState<StateType[]>([]);
+  // const [people, setPeople] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUsers();
+      console.log(user);
+    })();
+  }, []);
 
   const filteredPeople =
     query === ""

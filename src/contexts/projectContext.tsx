@@ -1,8 +1,17 @@
-import useProjectState from "@/hooks/useProjectState";
+"use client";
+
+import useProjectState, { ProjectContextType } from "@/hooks/useProjectState";
 import contextFactory from "./contextFactory";
 
-const { Provider, useContext } = contextFactory(
-  { newProjectOpen: false, setNewProjectOpen: () => undefined },
+const { Provider, useContext } = contextFactory<ProjectContextType>(
+  {
+    newProjectOpen: false,
+    sidebarOpen: false,
+    setNewProjectOpen: () => undefined,
+    setSidebarOpen: () => undefined,
+    navigation: [],
+    teams: [],
+  },
   useProjectState
 );
 

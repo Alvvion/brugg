@@ -21,3 +21,19 @@ export const POST = async (req: Request) => {
     return new NextResponse(err as string, { status: 404 });
   }
 };
+
+export const GET = async () => {
+  try {
+    await connectDB();
+    const collectionExists = await Project.exists({});
+
+    // If the collection doesn't exist, create an empty collection
+    if (!collectionExists) {
+      await Project.createCollection();
+    }
+    const data = await Project.find();
+    return new NextResponse(JSON.stringify(data), { status: 200 });
+  } catch (error) {
+    return new NextResponse(JSON.stringify(error), { status: 500 });
+  }
+};

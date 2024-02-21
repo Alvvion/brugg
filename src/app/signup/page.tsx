@@ -3,13 +3,13 @@
 import Image from "next/image";
 import logo from "@/assests/brugg-logo-1.png";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
-import UpdatePhoto from "@/components/UpdatePhoto";
+import UpdatePhoto from "@/components/login/UploadPhoto";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { createUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const schema = yup.object({
   firstName: yup.string().required("First Name is required"),
@@ -58,18 +58,15 @@ export default function Signup() {
     resolver: yupResolver(schema),
   });
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null | ArrayBuffer>(null);
+  const { push } = useRouter();
 
   const onSubmit: SubmitHandler<SignupFeild> = async (data) => {
-    if (selectedImage) {
-      data.image = selectedImage;
+    if (image) {
+      data.image = image;
     }
     await createUser(data);
-    if (data?.status === 201) {
-      redirect("/");
-    } else {
-      alert("Something went wrong");
-    }
+    push("/");
   };
 
   const onError = (error: FieldErrors<SignupFeild>) => {
@@ -91,11 +88,7 @@ export default function Signup() {
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <UpdatePhoto
-              register={register}
-              selectedImage={selectedImage}
-              setSelectedImage={setSelectedImage}
-            />
+            <UpdatePhoto image={image} setImage={setImage} />
           </div>
         </div>
         <div>

@@ -2,30 +2,34 @@
 
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useRef } from "react";
-import { UseFormRegister } from "react-hook-form";
-import type { SignupFeild } from "@/app/signup/page";
 import Image from "next/image";
 
-function UpdatePhoto({
-  register,
-  selectedImage,
-  setSelectedImage,
-}: {
-  register: UseFormRegister<SignupFeild>;
-  selectedImage: string | null;
-  setSelectedImage: React.Dispatch<React.SetStateAction<string | null>>;
-}) {
+type UploadPhotoProps = {
+  image: string | null | ArrayBuffer;
+  setImage: React.Dispatch<React.SetStateAction<string | null | ArrayBuffer>>;
+};
+
+const convertToBase64 = (file: File) =>
+  new Promise<string | null | ArrayBuffer>((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => resolve(fileReader.result);
+    fileReader.onerror = (error) => reject(error);
+  });
+
+function UpdatePhoto({ setImage }: UploadPhotoProps) {
   const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { ref: registerRef, ...rest } = register("image");
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploading(true);
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
+      const convertedImage = await convertToBase64(file);
+      setImage(convertedImage);
     }
     setUploading(false);
   };
@@ -39,11 +43,7 @@ function UpdatePhoto({
         <input
           type="file"
           hidden
-          {...rest}
-          ref={(e) => {
-            registerRef(e);
-            imageInputRef.current = e;
-          }}
+          ref={imageInputRef}
           onChange={handleOnChange}
         />
       </label>
