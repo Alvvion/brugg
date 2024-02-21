@@ -5,12 +5,16 @@ import contextFactory from "./contextFactory";
 
 const { Provider, useContext } = contextFactory<SignupContextType>(
   {
-    selectedImage: null,
+    selectedImage: undefined,
     setSelectedImage: () => undefined,
     register: undefined,
     handleSubmit: undefined,
     reset: undefined,
     errors: undefined,
+    submitted: false,
+    setSubmitted: () => undefined,
+    convImage: undefined,
+    setConvImage: () => undefined,
   },
   useSignupState
 );

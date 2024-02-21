@@ -38,11 +38,3 @@ export default async function DashboardLayout({
     </ProjectProvider>
   );
 }
-
-// useEffect(() => {
-//   (async () => {
-//     const session = await getSession();
-//     const user = await decrypt(session!);
-//     console.log(user);
-//   })();
-// }, []);

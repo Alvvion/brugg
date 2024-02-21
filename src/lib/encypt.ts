@@ -1,7 +1,9 @@
 import { genSalt, hash, compare } from "bcrypt-ts";
 import { Secret, sign, verify } from "jsonwebtoken";
 import { SignJWT, jwtVerify } from "jose";
-import { JWT_SECRET } from "./env";
+import { BASE_URL, JWT_SECRET } from "./env";
+import { Payload } from "@/app/signup/page";
+import axios from "axios";
 
 const secret = process.env.JWT_SECRET || JWT_SECRET;
 const key = new TextEncoder().encode(secret);
@@ -39,3 +41,12 @@ export const verifyToken = async (session: string): Promise<any> => {
     return false;
   }
 };
+
+export async function addProject(payload: Payload) {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/users/signup`, payload);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}

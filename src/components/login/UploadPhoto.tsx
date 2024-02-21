@@ -3,10 +3,13 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useSignupContext } from "@/contexts/signupContext";
 
 type UploadPhotoProps = {
-  image: string | null | ArrayBuffer;
-  setImage: React.Dispatch<React.SetStateAction<string | null | ArrayBuffer>>;
+  image?: string | ArrayBuffer;
+  setImage: React.Dispatch<
+    React.SetStateAction<string | undefined | ArrayBuffer>
+  >;
 };
 
 const convertToBase64 = (file: File) =>
@@ -17,7 +20,8 @@ const convertToBase64 = (file: File) =>
     fileReader.onerror = (error) => reject(error);
   });
 
-function UpdatePhoto({ setImage }: UploadPhotoProps) {
+function UpdatePhoto() {
+  const { setConvImage: setImage } = useSignupContext();
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -29,7 +33,7 @@ function UpdatePhoto({ setImage }: UploadPhotoProps) {
     if (file) {
       setSelectedImage(URL.createObjectURL(file));
       const convertedImage = await convertToBase64(file);
-      setImage(convertedImage);
+      setImage(convertedImage!);
     }
     setUploading(false);
   };

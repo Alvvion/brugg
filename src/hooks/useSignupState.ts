@@ -11,16 +11,30 @@ import {
 } from "react-hook-form";
 
 export type SignupContextType = {
-  selectedImage: string | null;
-  setSelectedImage: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedImage?: string | ArrayBuffer;
+  setSelectedImage: React.Dispatch<
+    React.SetStateAction<string | undefined | ArrayBuffer>
+  >;
+  submitted: boolean;
+  setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
   register: UseFormRegister<SignupFeild> | undefined;
   handleSubmit: UseFormHandleSubmit<SignupFeild, SignupFeild> | undefined;
   reset: UseFormReset<SignupFeild> | undefined;
   errors: FieldErrors<SignupFeild> | undefined;
+  convImage?: string | ArrayBuffer;
+  setConvImage: React.Dispatch<
+    React.SetStateAction<string | undefined | ArrayBuffer>
+  >;
 };
 
 const useSignupState = (): SignupContextType => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<
+    string | undefined | ArrayBuffer
+  >();
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [convImage, setConvImage] = useState<
+    string | undefined | ArrayBuffer
+  >();
   const {
     register,
     handleSubmit,
@@ -44,6 +58,10 @@ const useSignupState = (): SignupContextType => {
     handleSubmit,
     reset,
     errors,
+    submitted,
+    setSubmitted,
+    convImage,
+    setConvImage,
   };
 };
 

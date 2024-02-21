@@ -1,9 +1,9 @@
 "use server";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { cookies } from "next/headers";
 import { decrypt, encrypt } from "./encypt";
-import { SignupFeild } from "@/app/signup/page";
+import { Payload } from "@/app/signup/page";
 import { FormFeild } from "@/components/projectForm/NewProjectForm";
 import { BASE_URL } from "./env";
 import { ProjectType } from "@/app/dashboard/page";
@@ -35,15 +35,6 @@ export async function getSession() {
   const session = cookies().get("session")?.value;
   if (!session) return null;
   return session;
-}
-
-export async function createUser(payload: SignupFeild) {
-  try {
-    const { data } = await axios.post(`${BASE_URL}/api/users/signup`, payload);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 export async function getUsers() {

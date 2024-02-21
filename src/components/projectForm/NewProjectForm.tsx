@@ -35,7 +35,6 @@ function NewProjectForm({ users }: { users: UserSessionType[] }) {
   const { register, handleSubmit } = useForm<FormFeild>();
 
   const onSubmit: SubmitHandler<FormFeild> = (data) => {
-    console.log(data);
     const jointers: {
       _id: string;
     }[] = [];
