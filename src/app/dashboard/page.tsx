@@ -1,6 +1,7 @@
 import ProjectCard from "@/components/project/ProjectCard";
 import EmptyProject from "@/components/project/EmptyProject";
 import NewProjectButton from "@/components/layout/NewProjectButton";
+import { getProject } from "@/lib/auth";
 
 export type ProjectType = {
   projectCode: string;
@@ -11,12 +12,7 @@ export type ProjectType = {
 };
 
 export default async function Project() {
-  const data = await fetch("http://localhost:3000/api/project", {
-    method: "GET",
-    cache: "no-store",
-  });
-  const projects: ProjectType[] = await data.json();
-
+  const projects: ProjectType[] = await getProject();
   if (projects.length === 0) {
     return <EmptyProject hidden={false} />;
   }

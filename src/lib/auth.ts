@@ -4,8 +4,9 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { decrypt, encrypt } from "./encypt";
 import { SignupFeild } from "@/app/signup/page";
-import { UserSessionType } from "@/app/dashboard/layout";
 import { FormFeild } from "@/components/projectForm/NewProjectForm";
+import { BASE_URL } from "./env";
+import { ProjectType } from "@/app/dashboard/page";
 
 export const login = async (formData: FormData) => {
   const userCred = {
@@ -13,10 +14,7 @@ export const login = async (formData: FormData) => {
     password: formData.get("password"),
   };
   try {
-    const { data } = await axios.post(
-      "http://localhost:3000/api/users/login",
-      userCred
-    );
+    const { data } = await axios.post(`${BASE_URL}/api/users/login`, userCred);
     const { email }: { email: string } = data.user;
 
     const expires = new Date(Date.now() + 60000 * 30);
@@ -41,10 +39,7 @@ export async function getSession() {
 
 export async function createUser(payload: SignupFeild) {
   try {
-    const { data } = await axios.post(
-      "http://localhost:3000/api/users/signup",
-      payload
-    );
+    const { data } = await axios.post(`${BASE_URL}/api/users/signup`, payload);
     return data;
   } catch (error) {
     console.log(error);
@@ -53,7 +48,7 @@ export async function createUser(payload: SignupFeild) {
 
 export async function getUsers() {
   try {
-    const { data } = await axios.get("http://localhost:3000/api/users/signup");
+    await axios.get(`${BASE_URL}/api/users/signup`);
   } catch (error) {
     console.log(error);
   }
@@ -63,7 +58,7 @@ export async function getUser() {
   try {
     const sessionToken = cookies().get("session")?.value;
     const { email } = await decrypt(sessionToken!);
-    const { data } = await axios.post("http://localhost:3000/api/users", {
+    const { data } = await axios.post(`${BASE_URL}/api/users`, {
       email,
     });
     return data;
@@ -74,22 +69,21 @@ export async function getUser() {
 
 export async function addProject(payload: FormFeild) {
   try {
-    const { data } = await axios.post(
-      "http://localhost:3000/api/project",
-      payload
-    );
+    const { data } = await axios.post(`${BASE_URL}/api/project`, payload);
   } catch (error) {
     console.log(error);
   }
 }
 
-export const fetcher = async () => {
-  const data = await fetch("http://localhost:3000/api/project", {
+export const signout = () => {
+  cookies().delete("session");
+};
+
+export const getProject = async (): Promise<ProjectType[]> => {
+  const data = await fetch(`${BASE_URL}/api/project`, {
     method: "GET",
-    next: {
-      revalidate: 1,
-    },
+    cache: "no-store",
   });
-  const response = await data.json();
-  return response;
+  const projects = await data.json();
+  return projects;
 };

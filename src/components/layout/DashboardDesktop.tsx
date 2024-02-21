@@ -5,6 +5,7 @@ import logo from "@/assests/brugg-logo-1.png";
 import { useProjectContext } from "@/contexts/projectContext";
 import { UserSessionType } from "@/app/dashboard/layout";
 import ProfileOptions from "./ProfileOptions";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -83,7 +84,7 @@ function DashboardDesktop({ user }: { user: UserSessionType }) {
             </li>
             <li className="mx-3 mt-auto mb-10">
               <ProfileOptions>
-                {user.image ? (
+                {user?.image ? (
                   <div className="h-8 w-8 rounded-full bg-gray-50 relative">
                     <Image
                       src={user?.image}
@@ -92,7 +93,12 @@ function DashboardDesktop({ user }: { user: UserSessionType }) {
                       className="rounded-full"
                     />
                   </div>
-                ) : null}
+                ) : (
+                  <UserCircleIcon
+                    className="h-8 w-8 text-gray-500 fill-slate-200"
+                    aria-hidden="true"
+                  />
+                )}
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">
                   {user.firstName} {user.lastName}

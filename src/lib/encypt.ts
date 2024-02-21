@@ -30,3 +30,12 @@ export const decrypt = async (session: string): Promise<any> => {
   const { payload } = await jwtVerify(session, key, { algorithms: ["HS256"] });
   return payload;
 };
+
+export const verifyToken = async (session: string): Promise<any> => {
+  try {
+    await jwtVerify(session, key, { algorithms: ["HS256"] });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
