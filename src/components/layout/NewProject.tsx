@@ -4,8 +4,9 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useProjectContext } from "@/contexts/projectContext";
 import NewProjectForm from "../projectForm/NewProjectForm";
+import { UserSessionType } from "@/app/dashboard/layout";
 
-function NewProject({ users }: { users: object[] }) {
+function NewProject({ users }: { users: UserSessionType[] }) {
   const { newProjectOpen: open, setNewProjectOpen: setOpen } =
     useProjectContext();
 
