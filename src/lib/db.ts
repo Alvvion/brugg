@@ -6,7 +6,7 @@ const connectDB = async () => {
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGO_URL || MONGO_URL, {
+    await mongoose.connect(process.env.MONGO_URL!, {
       dbName: "Users",
       bufferCommands: false,
     });

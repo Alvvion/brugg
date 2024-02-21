@@ -46,7 +46,7 @@ export default function ProfileOptions({
                     "block px-4 py-2 text-sm"
                   )}
                 >
-                  License
+                  Change Password
                 </a>
               )}
             </Menu.Item>
