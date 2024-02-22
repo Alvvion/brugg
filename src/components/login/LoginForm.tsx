@@ -3,17 +3,21 @@
 import { useLoginContext } from "@/contexts/loginContext";
 import { login } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 function LoginForm() {
   const { error, setError } = useLoginContext();
+  const [auth, setAuth] = useState(false);
   return (
     <form
       action={async (formData) => {
+        setAuth(true);
         if (await login(formData)) {
           redirect("/dashboard");
         } else {
           setError("Invalid email or password");
         }
+        setAuth(false);
       }}
       className="space-y-6"
     >
@@ -85,9 +89,10 @@ function LoginForm() {
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
+          disabled={auth}
         >
-          Sign in
+          {!auth ? "Sign in" : "Loading"}
         </button>
       </div>
     </form>
