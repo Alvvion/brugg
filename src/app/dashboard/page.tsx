@@ -13,19 +13,19 @@ export type ProjectType = {
 };
 
 export default async function Project() {
-  const projects: ProjectType[] = await getProject();
   const user: UserSessionType = await getUser();
+  const projects: ProjectType[] = await getProject(user?._id);
   if (projects.length === 0) {
-    return <EmptyProject hidden={user.role === "Jointer"} />;
+    return <EmptyProject hidden={user?.role === "Jointer"} />;
   }
   return (
     <ul
       role="list"
       className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 relative"
     >
-      <NewProjectButton hidden={user.role === "Jointer"} />
-      {projects.map((project) => (
-        <ProjectCard project={project} key={project.projectCode} />
+      <NewProjectButton hidden={user?.role === "Jointer"} />
+      {projects?.map((project) => (
+        <ProjectCard project={project} key={project?.projectCode} />
       ))}
     </ul>
   );

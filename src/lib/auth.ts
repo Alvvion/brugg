@@ -1,9 +1,8 @@
 "use server";
 
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { cookies } from "next/headers";
 import { decrypt, encrypt } from "./encypt";
-import { Payload } from "@/app/signup/page";
 import { FormFeild } from "@/components/projectForm/NewProjectForm";
 import { BASE_URL } from "./env";
 import { ProjectType } from "@/app/dashboard/page";
@@ -14,12 +13,14 @@ export const login = async (formData: FormData) => {
     password: formData.get("password"),
   };
   try {
-    const { data } = await axios.post(`${BASE_URL}/api/users/login`, userCred);
-    const { email }: { email: string } = data.user;
+    const {
+      data: { user },
+    } = await axios.post(`${BASE_URL}/api/users/login`, userCred);
+    console.log(user);
 
     const expires = new Date(Date.now() + 60000 * 30);
     const session = await encrypt({
-      email,
+      user,
       expires,
     });
     cookies().set("session", session, { expires, httpOnly: true });
@@ -32,9 +33,9 @@ export const login = async (formData: FormData) => {
 };
 
 export async function getSession() {
-  const session = cookies().get("session")?.value;
-  if (!session) return null;
-  return session;
+  const sessionToken = cookies().get("session")?.value;
+  const { user } = await decrypt(sessionToken!);
+  return user;
 }
 
 export async function getUsers() {
@@ -48,10 +49,8 @@ export async function getUsers() {
 export async function getUser() {
   try {
     const sessionToken = cookies().get("session")?.value;
-    const { email } = await decrypt(sessionToken!);
-    const { data } = await axios.post(`${BASE_URL}/api/users`, {
-      email,
-    });
+    const { user } = await decrypt(sessionToken!);
+    const { data } = await axios.post(`${BASE_URL}/api/users`, user);
     return data;
   } catch (error) {
     console.warn(error);
@@ -60,7 +59,10 @@ export async function getUser() {
 
 export async function addProject(payload: FormFeild) {
   try {
-    const { data } = await axios.post(`${BASE_URL}/api/project`, payload);
+    const sessionToken = cookies().get("session")?.value;
+    const { user } = await decrypt(sessionToken!);
+    payload.issuedBy = user;
+    await axios.post(`${BASE_URL}/api/project/add`, payload);
   } catch (error) {
     console.log(error);
   }
@@ -70,11 +72,8 @@ export const signout = () => {
   cookies().delete("session");
 };
 
-export const getProject = async (): Promise<ProjectType[]> => {
-  const data = await fetch(`${BASE_URL}/api/project`, {
-    method: "GET",
-    cache: "no-store",
-  });
-  const projects = await data.json();
+export const getProject = async (id: string): Promise<ProjectType[]> => {
+  const { data } = await axios.post(`${BASE_URL}/api/project`, { _id: id });
+  const projects = await data;
   return projects;
 };

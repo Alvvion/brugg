@@ -22,7 +22,9 @@ export default async function DashboardLayout({
 }) {
   const user: UserSessionType = await getUser();
   const res = await getUsers();
-  const users: UserSessionType[] = await res.json();
+  let users: UserSessionType[] = await res.json();
+  users = users.filter((user) => user.role !== "Project Manager");
+
   return (
     <ProjectProvider>
       <div>

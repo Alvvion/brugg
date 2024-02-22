@@ -8,8 +8,19 @@ interface Project extends Document {
   startDate: string;
   deadline: string;
   location: string;
+  issuedBy: {
+    _id: string;
+    email: string;
+    role: string;
+  };
   jointers: User["_id"][];
 }
+
+const IssuedBySchema = new Schema({
+  _id: { type: String, required: true },
+  email: { type: String, required: true },
+  role: { type: String, required: true },
+});
 
 const projectSchema = new Schema<Project>({
   projectName: {
@@ -19,6 +30,7 @@ const projectSchema = new Schema<Project>({
   projectCode: {
     type: String,
     required: true,
+    unique: true,
   },
   startDate: {
     type: String,
@@ -32,12 +44,15 @@ const projectSchema = new Schema<Project>({
     type: String,
     required: true,
   },
+  issuedBy: {
+    type: IssuedBySchema,
+    required: true,
+  },
   jointers: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Users",
+      _id: Schema.Types.ObjectId,
     },
   ],
 });
 
-export default models.Projects || model<Project>("Projects", projectSchema);
+export default models.projects || model<Project>("projects", projectSchema);

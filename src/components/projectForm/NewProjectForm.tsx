@@ -15,7 +15,12 @@ export type FormFeild = {
   startDate: string;
   deadline: string;
   location: string;
-  jointer: {
+  issuedBy: {
+    _id: string;
+    email: string;
+    role: string;
+  };
+  jointers: {
     _id: string;
   }[];
 };
@@ -40,7 +45,7 @@ function NewProjectForm({ users }: { users: UserSessionType[] }) {
     }[] = [];
     selectedPerson.forEach((person) => jointers.push({ _id: person._id }));
     console.log(jointers);
-    data.jointer = jointers;
+    data.jointers = jointers;
     addProject(data);
     setOpen(false);
     router.refresh();

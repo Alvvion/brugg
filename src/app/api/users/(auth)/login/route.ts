@@ -17,7 +17,9 @@ export const POST = async (req: Request) => {
         JSON.stringify({
           message: "Authenticated",
           user: {
+            _id: user._id,
             email: user.email,
+            role: user.role,
           },
         }),
         {

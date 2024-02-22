@@ -1,38 +1,22 @@
 import connectDB from "@/lib/db";
 import { NextResponse } from "next/server";
 import Project from "@/models/ProjectSchema";
+import { FormFeild } from "@/components/projectForm/NewProjectForm";
 
 export const POST = async (req: Request) => {
   try {
+    await connectDB();
     const body = await req.json();
-    await connectDB();
-    const { projectCode } = body;
-    const existingProject = await Project.findOne({ projectCode });
-    if (existingProject) {
-      throw new Error("Project should be unique");
-    }
-    const newProject = new Project(body);
-    await newProject.save();
-    return new NextResponse(
-      JSON.stringify({ status: 201, message: "Project Created" }),
-      { status: 201 }
+
+    const projects: FormFeild[] = await Project.find();
+    projects.filter(
+      (project) =>
+        project.issuedBy._id === body._id ||
+        project.jointers.some((jointer) => jointer._id === body._id)
     );
-  } catch (err) {
-    return new NextResponse(err as string, { status: 404 });
-  }
-};
-
-export const GET = async () => {
-  try {
-    await connectDB();
-    const collectionExists = await Project.exists({});
-
-    // If the collection doesn't exist, create an empty collection
-    if (!collectionExists) {
-      await Project.createCollection();
-    }
-    const data = await Project.find();
-    return new NextResponse(JSON.stringify(data), { status: 200 });
+    return new NextResponse(JSON.stringify(projects), {
+      status: 200,
+    });
   } catch (error) {
     return new NextResponse(JSON.stringify(error), { status: 500 });
   }

@@ -14,10 +14,10 @@ function ProjectCard({ project }: { project: ProjectType }) {
     <li className="overflow-hidden rounded-xl border-2 border-gray-200 shadow-2xl">
       <div className="flex items-center gap-x-4 border-b-4 border-gray-900/5 bg-gray-50 p-6">
         <div className="text-sm font-medium leading-6 text-gray-900">
-          {project.projectCode}
+          {project?.projectCode}
         </div>
         <div className="text-sm font-medium leading-6 text-gray-900">
-          {project.projectName}
+          {project?.projectName}
         </div>
         <Menu as="div" className="relative ml-auto">
           <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
@@ -70,19 +70,19 @@ function ProjectCard({ project }: { project: ProjectType }) {
         <div className="flex justify-between gap-x-4">
           <dt className="text-gray-500">Start date</dt>
           <dd className="text-gray-700">
-            <time dateTime={project.startDate}>{project.startDate}</time>
+            <time dateTime={project?.startDate}>{project?.startDate}</time>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4">
           <dt className="text-gray-500">Deadline</dt>
           <dd className="flex items-start gap-x-2">
-            <div className="font-medium text-gray-900">{project.deadline}</div>
+            <div className="font-medium text-gray-900">{project?.deadline}</div>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4">
           <dt className="text-gray-500">Location</dt>
           <dd className="flex items-start gap-x-2">
-            <div className="font-medium text-gray-900">{project.location}</div>
+            <div className="font-medium text-gray-900">{project?.location}</div>
           </dd>
         </div>
       </dl>

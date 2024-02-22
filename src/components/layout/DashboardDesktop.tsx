@@ -12,7 +12,7 @@ function classNames(...classes: string[]) {
 }
 
 function DashboardDesktop({ user }: { user: UserSessionType }) {
-  const { navigation, teams } = useProjectContext();
+  const { navigation } = useProjectContext();
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -70,7 +70,7 @@ function DashboardDesktop({ user }: { user: UserSessionType }) {
                 )}
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">
-                  {user.firstName} {user.lastName}
+                  {user?.firstName} {user?.lastName}
                 </span>
               </ProfileOptions>
             </li>

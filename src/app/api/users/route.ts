@@ -24,9 +24,9 @@ export const POST = async (req: Request) => {
     if (!user) {
       throw new Error("No user exists");
     } else {
-      const { firstName, lastName, email, role, image } = user;
+      const { _id, firstName, lastName, email, role, image } = user;
       return new NextResponse(
-        JSON.stringify({ firstName, lastName, email, role, image }),
+        JSON.stringify({ _id, firstName, lastName, email, role, image }),
         { status: 200 }
       );
     }

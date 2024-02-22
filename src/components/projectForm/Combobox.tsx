@@ -7,7 +7,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { Combobox } from "@headlessui/react";
-import { StateType } from "./NewProjectForm";
 import { UserSessionType } from "@/app/dashboard/layout";
 
 function classNames(...classes: string[]) {
@@ -24,6 +23,7 @@ export default function Listbox({
   users: UserSessionType[];
 }) {
   const [query, setQuery] = useState("");
+  console.log(selectedPerson);
 
   const filteredPeople =
     query === ""
