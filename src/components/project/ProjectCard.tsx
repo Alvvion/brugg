@@ -68,19 +68,19 @@ function ProjectCard({ project }: { project: ProjectType }) {
       </div>
       <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
         <div className="flex justify-between gap-x-4">
-          <dt className="text-gray-500">Last invoice</dt>
+          <dt className="text-gray-500">Start date</dt>
           <dd className="text-gray-700">
             <time dateTime={project.startDate}>{project.startDate}</time>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4">
-          <dt className="text-gray-500">Amount</dt>
+          <dt className="text-gray-500">Deadline</dt>
           <dd className="flex items-start gap-x-2">
             <div className="font-medium text-gray-900">{project.deadline}</div>
           </dd>
         </div>
         <div className="flex justify-between gap-x-4">
-          <dt className="text-gray-500">Amount</dt>
+          <dt className="text-gray-500">Location</dt>
           <dd className="flex items-start gap-x-2">
             <div className="font-medium text-gray-900">{project.location}</div>
           </dd>
