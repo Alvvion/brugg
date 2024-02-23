@@ -18,9 +18,9 @@ export const GET = async () => {
 
 export const POST = async (req: Request) => {
   try {
-    const { email } = await req.json();
+    const { _id } = await req.json();
     await connectDB();
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ _id });
     if (!user) {
       throw new Error("No user exists");
     } else {

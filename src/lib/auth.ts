@@ -16,7 +16,6 @@ export const login = async (formData: FormData) => {
     const {
       data: { user },
     } = await axios.post(`${BASE_URL}/api/users/login`, userCred);
-    console.log(user);
 
     const expires = new Date(Date.now() + 60000 * 30);
     const session = await encrypt({
@@ -34,13 +33,15 @@ export const login = async (formData: FormData) => {
 
 export async function getSession() {
   const sessionToken = cookies().get("session")?.value;
+  if (!sessionToken) return null;
   const { user } = await decrypt(sessionToken!);
   return user;
 }
 
 export async function getUsers() {
   try {
-    await axios.get(`${BASE_URL}/api/users/signup`);
+    const { data } = await axios.get(`${BASE_URL}/api/users`);
+    return await data;
   } catch (error) {
     console.log(error);
   }
@@ -72,8 +73,27 @@ export const signout = () => {
   cookies().delete("session");
 };
 
-export const getProject = async (id: string): Promise<ProjectType[]> => {
+export const getProjects = async (id: string): Promise<ProjectType[]> => {
   const { data } = await axios.post(`${BASE_URL}/api/project`, { _id: id });
   const projects = await data;
-  return projects;
+  return await projects;
+};
+
+export const getProject = async (projectCode: string) => {
+  const { data } = await axios.post(`${BASE_URL}/api/project/get`, {
+    projectCode,
+  });
+  return await data;
+};
+
+export const getUserById = async (userId: string) => {
+  const { data } = await axios.post(`${BASE_URL}/api/users`, { _id: userId });
+  return data;
+};
+
+export const getTimesheets = async (projectCode: string) => {
+  const { data } = await axios.post(`${BASE_URL}/api/timesheet/get`, {
+    projectCode,
+  });
+  return await data;
 };

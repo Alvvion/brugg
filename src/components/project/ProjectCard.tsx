@@ -3,13 +3,20 @@
 import { ProjectType } from "@/app/dashboard/page";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 import { Fragment } from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProjectCard({ project }: { project: ProjectType }) {
+function ProjectCard({
+  project,
+  user,
+}: {
+  project: ProjectType;
+  user: { _id: string; email: string; role: string };
+}) {
   return (
     <li className="overflow-hidden rounded-xl border-2 border-gray-200 shadow-2xl">
       <div className="flex items-center gap-x-4 border-b-4 border-gray-900/5 bg-gray-50 p-6">
@@ -36,21 +43,25 @@ function ProjectCard({ project }: { project: ProjectType }) {
             <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="#"
+                  <Link
+                    href={
+                      user?.role === "Project Manager"
+                        ? `/dashboard/project/${project.projectCode}`
+                        : `/dashboard/project/${project.projectCode}/form`
+                    }
                     className={classNames(
                       active ? "bg-gray-50" : "",
                       "block px-3 py-1 text-sm leading-6 text-gray-900"
                     )}
                   >
-                    View
+                    {user?.role === "Project Manager" ? "View" : "Add"}
                     <span className="sr-only">, {project.projectName}</span>
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <a
+                  <Link
                     href="#"
                     className={classNames(
                       active ? "bg-gray-50" : "",
@@ -59,7 +70,7 @@ function ProjectCard({ project }: { project: ProjectType }) {
                   >
                     Edit
                     <span className="sr-only">, {project.projectCode}</span>
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
             </Menu.Items>

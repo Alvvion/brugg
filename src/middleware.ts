@@ -5,7 +5,7 @@ import { verifyToken } from "./lib/encypt";
 export async function middleware(req: NextRequest) {
   const session = cookies().get("session")?.value;
   const isToken = await verifyToken(session!);
-  if (req.nextUrl.pathname === "/dashboard") {
+  if (req.nextUrl.pathname.includes("/dashboard")) {
     if (!isToken) {
       return NextResponse.redirect(new URL("/", req.url));
     }

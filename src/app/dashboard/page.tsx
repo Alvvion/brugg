@@ -1,8 +1,7 @@
 import ProjectCard from "@/components/project/ProjectCard";
 import EmptyProject from "@/components/project/EmptyProject";
 import NewProjectButton from "@/components/layout/NewProjectButton";
-import { getProject, getUser } from "@/lib/auth";
-import { UserSessionType } from "./layout";
+import { getProjects, getSession } from "@/lib/auth";
 
 export type ProjectType = {
   projectCode: string;
@@ -10,11 +9,24 @@ export type ProjectType = {
   startDate: string;
   deadline: string;
   location: string;
+  jointers: { _id: string }[];
+  issuedBy: {
+    _id: string;
+    email: string;
+    role: string;
+  };
+};
+
+export type UserType = {
+  _id: string;
+  email: string;
+  role: string;
+  name: string;
 };
 
 export default async function Project() {
-  const user: UserSessionType = await getUser();
-  const projects: ProjectType[] = await getProject(user?._id);
+  const user: UserType = await getSession();
+  const projects: ProjectType[] = await getProjects(user?._id);
   if (projects.length === 0) {
     return <EmptyProject hidden={user?.role === "Jointer"} />;
   }
@@ -25,7 +37,7 @@ export default async function Project() {
     >
       <NewProjectButton hidden={user?.role === "Jointer"} />
       {projects?.map((project) => (
-        <ProjectCard project={project} key={project?.projectCode} />
+        <ProjectCard project={project} key={project?.projectCode} user={user} />
       ))}
     </ul>
   );

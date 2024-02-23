@@ -4,8 +4,7 @@ import NewProjectButton from "@/components/layout/NewProjectButton";
 import { ProjectProvider } from "@/contexts/projectContext";
 import DashboardDesktop from "@/components/layout/DashboardDesktop";
 import NewProject from "@/components/layout/NewProject";
-import { getUser } from "@/lib/auth";
-import { GET as getUsers } from "@/app/api/users/route";
+import { getUser, getUsers } from "@/lib/auth";
 export type UserSessionType = {
   _id: string;
   firstName: string;
@@ -21,12 +20,13 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const user: UserSessionType = await getUser();
-  const res = await getUsers();
-  let users: UserSessionType[] = await res.json();
-  users = users.filter((user) => user.role !== "Project Manager");
+  let users: UserSessionType[] = await getUsers();
+  // let users: UserSessionType[] = await res.json();
+  users = users?.filter((user) => user.role !== "Project Manager");
 
   return (
     <ProjectProvider>
+      Hello
       <div>
         <NewProject users={users} />
         <DashboardTransition />

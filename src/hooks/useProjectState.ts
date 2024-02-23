@@ -27,7 +27,12 @@ const useProjectState = (): ProjectContextType => {
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigation = [
-    { name: "Projects", href: "#", icon: FolderIcon, current: true },
+    {
+      name: "Projects",
+      href: "/dashboard",
+      icon: FolderIcon,
+      current: true,
+    },
     { name: "Team", href: "#", icon: UsersIcon, current: false },
     // Add more here if you want to
   ];

@@ -20,6 +20,7 @@ export const POST = async (req: Request) => {
             _id: user._id,
             email: user.email,
             role: user.role,
+            name: user.firstName + " " + user.lastName,
           },
         }),
         {

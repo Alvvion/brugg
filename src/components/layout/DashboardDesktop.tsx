@@ -6,6 +6,7 @@ import { useProjectContext } from "@/contexts/projectContext";
 import { UserSessionType } from "@/app/dashboard/layout";
 import ProfileOptions from "./ProfileOptions";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -26,7 +27,7 @@ function DashboardDesktop({ user }: { user: UserSessionType }) {
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <a
+                    <Link
                       href={item.href}
                       className={classNames(
                         item.current
@@ -45,7 +46,7 @@ function DashboardDesktop({ user }: { user: UserSessionType }) {
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

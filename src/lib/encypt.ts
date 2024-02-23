@@ -4,6 +4,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { BASE_URL, JWT_SECRET } from "./env";
 import { Payload } from "@/app/signup/page";
 import axios from "axios";
+import { TimesheetFeild } from "@/components/projectForm/TimesheetForm";
 
 const secret = process.env.JWT_SECRET || JWT_SECRET;
 const key = new TextEncoder().encode(secret);
@@ -48,5 +49,14 @@ export async function addProject(payload: Payload) {
     console.log(data);
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function addTimesheet(payload: TimesheetFeild) {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/timesheet`, payload);
+    console.log(data);
+  } catch (err) {
+    console.log(err);
   }
 }

@@ -1,28 +1,29 @@
-const transactions = [
-  {
-    id: "AAPS0L",
-    company: "Chase & Co.",
-    share: "CAC",
-    commission: "+$4.37",
-    price: "$3,509.00",
-    quantity: "12.00",
-    netAmount: "$4,397.00",
-  },
-  // More transactions...
-];
+import { UserSessionType } from "@/app/dashboard/layout";
+import { ProjectType } from "@/app/dashboard/page";
+import { getTimesheets, getUserById } from "@/lib/auth";
+import { TimesheetFeild } from "../projectForm/TimesheetForm";
 
-export default function ViewProject() {
+type ViewTimesheetFeild = TimesheetFeild & { _id: string };
+
+export default async function ViewProject({
+  project,
+}: {
+  project: ProjectType;
+}) {
+  const timesheets: ViewTimesheetFeild[] = await getTimesheets(
+    project?.projectCode
+  );
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
-            Transactions
+            Timesheet
           </h1>
-          <p className="mt-2 text-sm text-gray-700">
+          {/* <p className="mt-2 text-sm text-gray-700">
             A table of placeholder stock market data that does not make any
             sense.
-          </p>
+          </p> */}
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
@@ -43,43 +44,43 @@ export default function ViewProject() {
                     scope="col"
                     className="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
                   >
-                    Transaction ID
+                    Date
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Company
+                    Jointer's Name
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Share
+                    Start Time
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Commision
+                    End Time
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Price
+                    Action
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Quantity
+                    Resource
                   </th>
                   <th
                     scope="col"
                     className="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
-                    Net amount
+                    Complaints/Delay
                   </th>
                   <th
                     scope="col"
@@ -90,39 +91,42 @@ export default function ViewProject() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {transactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                      {transaction.id}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
-                      {transaction.company}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
-                      {transaction.share}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                      {transaction.commission}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                      {transaction.price}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                      {transaction.quantity}
-                    </td>
-                    <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                      {transaction.netAmount}
-                    </td>
-                    <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a
-                        href="#"
-                        className="text-indigo-600 hover:text-indigo-900"
-                      >
-                        Edit<span className="sr-only">, {transaction.id}</span>
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+                {timesheets.map((timesheet, index) => {
+                  return (
+                    <tr key={timesheet?._id}>
+                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                        22-02-2024
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
+                        {timesheet?.jointer}
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
+                        {timesheet?.startTime}
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                        {timesheet?.endTime}
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                        {timesheet?.actions}
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                        View
+                      </td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                        View
+                      </td>
+                      <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                        <a
+                          href="#"
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          Edit
+                          <span className="sr-only">, {timesheet?._id}</span>
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
