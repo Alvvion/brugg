@@ -42,21 +42,3 @@ export const verifyToken = async (session: string): Promise<any> => {
     return false;
   }
 };
-
-export async function addProject(payload: Payload) {
-  try {
-    const { data } = await axios.post(`${BASE_URL}/api/users/signup`, payload);
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function addTimesheet(payload: TimesheetFeild) {
-  try {
-    const { data } = await axios.post(`${BASE_URL}/api/timesheet`, payload);
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-}

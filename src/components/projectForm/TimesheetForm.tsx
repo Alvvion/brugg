@@ -1,7 +1,7 @@
 "use client";
 
 import { UserType } from "@/app/dashboard/page";
-import { addTimesheet } from "@/lib/encypt";
+import { addTimesheet } from "@/lib/auth";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { SubmitHandler, useForm } from "react-hook-form";
 

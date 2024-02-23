@@ -6,6 +6,8 @@ import { decrypt, encrypt } from "./encypt";
 import { FormFeild } from "@/components/projectForm/NewProjectForm";
 import { BASE_URL } from "./env";
 import { ProjectType } from "@/app/dashboard/page";
+import { Payload } from "@/app/signup/page";
+import { TimesheetFeild } from "@/components/projectForm/TimesheetForm";
 
 export const login = async (formData: FormData) => {
   const userCred = {
@@ -69,6 +71,15 @@ export async function addProject(payload: FormFeild) {
   }
 }
 
+export async function addUser(payload: Payload) {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/users/signup`, payload);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const signout = () => {
   cookies().delete("session");
 };
@@ -97,3 +108,12 @@ export const getTimesheets = async (projectCode: string) => {
   });
   return await data;
 };
+
+export async function addTimesheet(payload: TimesheetFeild) {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/timesheet`, payload);
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}

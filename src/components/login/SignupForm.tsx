@@ -7,7 +7,7 @@ import UpdatePhoto from "@/components/login/UploadPhoto";
 import { useSignupContext } from "@/contexts/signupContext";
 import { SubmitHandler } from "react-hook-form";
 import { Payload, SignupFeild } from "@/app/signup/page";
-import { addProject } from "@/lib/encypt";
+import { addUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
 function SignupForm() {
@@ -25,7 +25,6 @@ function SignupForm() {
   const { push } = useRouter();
 
   const onSubmit: SubmitHandler<SignupFeild> = (data) => {
-    setSubmitted(true);
     const payload: Payload = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -35,9 +34,8 @@ function SignupForm() {
       image,
     };
 
-    addProject(payload);
+    addUser(payload);
     push("/");
-    setSubmitted(false);
   };
 
   return (
