@@ -11,13 +11,11 @@ function LoginForm() {
   return (
     <form
       action={async (formData) => {
-        setAuth(true);
         if (await login(formData)) {
           redirect("/dashboard");
         } else {
           setError("Invalid email or password");
         }
-        setAuth(false);
       }}
       className="space-y-6"
     >

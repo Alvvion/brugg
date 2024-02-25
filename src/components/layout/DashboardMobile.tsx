@@ -1,9 +1,11 @@
 "use client";
 
+import { UserSessionType } from "@/app/dashboard/layout";
 import { useProjectContext } from "@/contexts/projectContext";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
-function DashboardMobile() {
+function DashboardMobile({ user }: { user: UserSessionType }) {
   const { setSidebarOpen } = useProjectContext();
   return (
     <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
@@ -20,11 +22,16 @@ function DashboardMobile() {
       </div>
       <a href="#">
         <span className="sr-only">Your profile</span>
-        <img
-          className="h-8 w-8 rounded-full bg-gray-50"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
+        {user?.image ? (
+          <div className="h-8 w-8 rounded-full bg-gray-50 relative">
+            <Image src={user?.image} fill alt="" className="rounded-full" />
+          </div>
+        ) : (
+          <UserCircleIcon
+            className="h-8 w-8 text-gray-500 fill-slate-200"
+            aria-hidden="true"
+          />
+        )}
       </a>
     </div>
   );

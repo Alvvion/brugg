@@ -1,21 +1,19 @@
+import { ProjectType } from "@/app/dashboard/page";
 import ProjectHeading from "@/components/project/ProjectHeading";
-import ViewProject from "@/components/project/ViewProject";
-import { getProject } from "@/lib/auth";
-import { ProjectType } from "../../page";
 import ViewComplaints from "@/components/project/ViewComplaints";
+import { getProject } from "@/lib/auth";
 
-async function ProjectPage({
+async function page({
   params: { projectCode },
 }: {
   params: { projectCode: string };
 }) {
   const project: ProjectType = await getProject(projectCode);
-
   return (
     <>
       <ProjectHeading project={project} />
-      <ViewProject project={project} />
+      <ViewComplaints project={project} />
     </>
   );
 }
-export default ProjectPage;
+export default page;

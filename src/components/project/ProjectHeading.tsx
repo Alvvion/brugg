@@ -62,6 +62,12 @@ export default function ProjectHeading({ project }: { project: ProjectType }) {
           </p>
         </div>
         <div className="mt-4 flex flex-shrink-0 md:ml-4 md:mt-0">
+          <Link
+            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 mr-5"
+            href={`/dashboard/project/${project?.projectCode}/complaints`}
+          >
+            View Complaints
+          </Link>
           <button
             type="button"
             className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"

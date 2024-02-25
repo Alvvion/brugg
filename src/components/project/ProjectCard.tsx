@@ -59,6 +59,26 @@ function ProjectCard({
                   </Link>
                 )}
               </Menu.Item>
+              {user?.role === "Project Manager" ? (
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
+                      href={
+                        user?.role === "Project Manager"
+                          ? `/dashboard/project/${project.projectCode}`
+                          : `/dashboard/project/${project.projectCode}/form`
+                      }
+                      className={classNames(
+                        active ? "bg-gray-50" : "",
+                        "block px-3 py-1 text-sm leading-6 text-gray-900"
+                      )}
+                    >
+                      Complaints
+                      <span className="sr-only">, {project.projectName}</span>
+                    </Link>
+                  )}
+                </Menu.Item>
+              ) : null}
               <Menu.Item>
                 {({ active }) => (
                   <Link

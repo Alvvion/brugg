@@ -26,12 +26,11 @@ export default async function DashboardLayout({
 
   return (
     <ProjectProvider>
-      Hello
       <div>
         <NewProject users={users} />
         <DashboardTransition />
         <DashboardDesktop user={user} />
-        <DashboardMobile />
+        <DashboardMobile user={user} />
 
         <main className="py-10 lg:pl-72">
           <div className="px-4 sm:px-6 lg:px-8">{children}</div>
